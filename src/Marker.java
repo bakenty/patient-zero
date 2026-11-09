@@ -11,8 +11,16 @@ public class Marker {
      * Example: p = "ACGAC" gives [0, 0, 0, 1, 2]. The last number is the "Border length" line.
      */
     public static int[] prefixFunction(String p) {
-        // TODO Mission 3a
-        return new int[p.length()];
+        int[] pi = new int[p.length()];
+        for (int i = 1; i < p.length(); i++) {
+            int border = pi[i - 1];
+            while (border > 0 && p.charAt(i) != p.charAt(border)) {
+                border = pi[border - 1];
+            }
+            if (p.charAt(i) == p.charAt(border)) border++;
+            pi[i] = border;
+        }
+        return pi;
     }
 
     /**
@@ -22,8 +30,26 @@ public class Marker {
      * the first one is "First hit" (-1 when there is none).
      */
     public static int[] findAll(String text, String p) {
-        // TODO Mission 3b
-        return new int[0];
+        if (p.isEmpty() || p.length() > text.length()) return new int[0];
+
+        int[] pi = prefixFunction(p);
+        int matched = 0;
+        List<Integer> hits = new ArrayList<>();
+        for (int i = 0; i < text.length(); i++) {
+            char letter = text.charAt(i);
+            while (matched > 0 && letter != p.charAt(matched)) {
+                matched = pi[matched - 1];
+            }
+            if (letter == p.charAt(matched)) matched++;
+            if (matched == p.length()) {
+                hits.add(i - p.length() + 1);
+                matched = pi[matched - 1];
+            }
+        }
+
+        int[] positions = new int[hits.size()];
+        for (int i = 0; i < positions.length; i++) positions[i] = hits.get(i);
+        return positions;
     }
 
     /**
