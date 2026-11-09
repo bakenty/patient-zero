@@ -1,8 +1,8 @@
 # Assignment 4. Patient Zero
 
 Name: Yelubek Bakdaulet  
-Student ID: 252914\
-Group: [enter your group]
+Student ID: 252914
+Group: se-2512
 
 ## Run and verify
 
