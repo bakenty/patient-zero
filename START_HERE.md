@@ -18,9 +18,9 @@ If your editor complains: in IntelliJ choose File, New, Project from Existing So
 
 ## 3. Make your data
 
-    java tools/MakeVariant.java YOUR_STUDENT_ID data
+    java tools/MakeVariant.java 252914 data
 
-This creates four files in `data`. They are yours, made from your ID. Type the ID exactly as it is in Moodle, with all its digits: `12345` and `012345` give different files.
+This creates four files in `data` for your student ID `252914`. Type the ID exactly as it is in Moodle, with all its digits: `12345` and `012345` give different files.
 
 ## 4. The story and the files
 

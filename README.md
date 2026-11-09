@@ -1,34 +1,35 @@
 # Assignment 4. Patient Zero
 
 Name: Yelubek Bakdaulet  
-Student ID: [enter the exact ID from Moodle]  
+Student ID: 252914\
 Group: [enter your group]
 
 ## Run and verify
 
-This draft includes four demonstration files generated with the label `DEMO`.
+The four files in `data` were generated for student ID `252914`.
 Run these commands from the project folder with Java 17 or newer:
 
 ```sh
+java tools/MakeVariant.java 252914 data
 java tools/Check.java
 java -cp out Main
 java -cp out Bench
 ```
 
-Before submission, run `java tools/MakeVariant.java YOUR_STUDENT_ID data` with your actual ID, preserving leading zeros. Run `java -cp out Main` again, replace the demo results and examples below, and save a screenshot of the regenerated `output/outbreak.html` as `output/outbreak.png`. Review the implementation and write the report answers in your own words, as required by the assignment.
+The results and examples below, along with `output/outbreak.html`, use the data for `252914`. Before submission, save a screenshot of `output/outbreak.html` as `output/outbreak.png`. Review the implementation and write the report answers in your own words, as required by the assignment.
 
-## Program output on DEMO
+## Program output for 252914
 
 ```
-Mutations: 65
-Shared core: 1004
-Marker hits: 4
-First hit: 2284
+Mutations: 105
+Shared core: 1214
+Marker hits: 6
+First hit: 2816
 Border length: 3
-Shared words: 496
-Tests needed: 26
-Cheapest testing: 86
-Longest chain: 21
+Shared words: 459
+Tests needed: 40
+Cheapest testing: 184
+Longest chain: 33
 ```
 
 The starter checker passed all nine lines on each of `tiny`, `small`, and `dense`.
@@ -36,14 +37,14 @@ The starter checker passed all nine lines on each of `tiny`, `small`, and `dense
 ## Questions
 
 1. **Edit distance.** The cell `d[i][j]` stores the minimum number of edits to turn the first `i` letters of A into the first `j` letters of B. It takes the minimum of deletion from above, insertion from the left, and a match or replacement from the diagonal. The distance from an empty prefix is the length of the other prefix.
-2. **Shared core.** A subsequence keeps letters in order and may skip intervening letters. A substring uses consecutive letters. An insertion or deletion can shift a long matching block away from its original indices, which explains how the demo shares a core of 1,004 letters even though only 369 letters match at the same index.
-3. **Marker.** For each marker prefix, the prefix function gives the length of its longest proper prefix that is also a suffix. On a mismatch KMP falls back to a shorter valid match and compares the same text character again, so the text index never moves backward. The demo marker `GCTTCTGCT` has border length 3 because it starts and ends with `GCT`.
+2. **Shared core.** A subsequence keeps letters in order and may skip intervening letters. A substring uses consecutive letters. An insertion or deletion can shift a long matching block away from its original indices, which explains how the strains for `252914` share a core of 1,214 letters even though only 500 letters match at the same index.
+3. **Marker.** For each marker prefix, the prefix function gives the length of its longest proper prefix that is also a suffix. On a mismatch KMP falls back to a shorter valid match and compares the same text character again, so the text index never moves backward. The marker `CACCGTCAC` has border length 3 because it starts and ends with `CAC`.
 4. **Copied words.** Different windows can have the same hash, so character comparison verifies each candidate. Rolling the hash costs constant time, but when many windows share a hash, verifying candidates can dominate the runtime.
 5. **Tree DP.** For each subtree, I compute its cheapest coverage when its root is tested and when its root is skipped. Testing a person lets each child take its cheaper state, while skipping that person forces every child to be tested. A greedy degree rule can pick an expensive center of a star even when testing all its leaves costs less.
 
 ## AI use
 
-ChatGPT drafted the five implementations and these report answers, ran the starter checks and benchmark, and organized the draft into mission commits. The starter project supplied the input reader, data generator, visualizer, benchmark, and checker.
+ChatGPT drafted the five implementations and these report answers, ran the starter checks and benchmark, and organized the draft into mission commits. It also regenerated the data and visualization for student ID `252914` and updated the report results. The starter project supplied the input reader, data generator, visualizer, benchmark, and checker.
 
 ## Timing
 
@@ -72,6 +73,6 @@ Here `n` and `m` are the input sequence lengths, `k` is the window length, `h` i
 
 ## Before submission
 
-- Replace the demo data, output and marker details with your own. Add your group and screenshot.
+- Add your group and screenshot.
 - Verify the report and the code, then commit the updates and push `main` to a public GitHub repository.
 - Open the repository link without signing in and submit the link in Moodle.
