@@ -61,7 +61,49 @@ public class Marker {
      * Example: a = "ACGTAC", b = "TTACGT", k = 4: the words of a are ACGT, CGTA, GTAC; only ACGT is in b, so the answer is 1.
      */
     public static int sharedWords(String a, String b, int k) {
-        // TODO Mission 4
-        return -1;
+        if (k <= 0 || k > a.length() || k > b.length()) return 0;
+
+        long power = 1;
+        for (int i = 1; i < k; i++) power = power * BASE % MODULUS;
+
+        Map<Long, List<Integer>> windows = new HashMap<>();
+        long hash = firstHash(b, k);
+        for (int start = 0; start <= b.length() - k; start++) {
+            if (start > 0) hash = slide(hash, b.charAt(start - 1), b.charAt(start + k - 1), power);
+            windows.computeIfAbsent(hash, ignored -> new ArrayList<>()).add(start);
+        }
+
+        int shared = 0;
+        hash = firstHash(a, k);
+        for (int start = 0; start <= a.length() - k; start++) {
+            if (start > 0) hash = slide(hash, a.charAt(start - 1), a.charAt(start + k - 1), power);
+            List<Integer> candidates = windows.get(hash);
+            if (candidates == null) continue;
+            for (int candidate : candidates) {
+                int offset = 0;
+                while (offset < k && a.charAt(start + offset) == b.charAt(candidate + offset)) {
+                    offset++;
+                }
+                if (offset == k) {
+                    shared++;
+                    break;
+                }
+            }
+        }
+        return shared;
+    }
+
+    private static final long BASE = 257;
+    private static final long MODULUS = 1_000_000_007;
+
+    private static long firstHash(String text, int k) {
+        long hash = 0;
+        for (int i = 0; i < k; i++) hash = (hash * BASE + text.charAt(i)) % MODULUS;
+        return hash;
+    }
+
+    private static long slide(long hash, char outgoing, char incoming, long power) {
+        long tail = (hash - outgoing * power % MODULUS + MODULUS) % MODULUS;
+        return (tail * BASE + incoming) % MODULUS;
     }
 }
